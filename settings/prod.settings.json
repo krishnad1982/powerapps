@@ -3,10 +3,6 @@
         {
             "schemaName": "krpk_apiBaseUrl",
             "value": "https://api.prod.contoso.com"
-        },
-        {
-            "schemaName": "new_Mode",
-            "value": "UAT"
         }
     ],
     "connectionReferences": [

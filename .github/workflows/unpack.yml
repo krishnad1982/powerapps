@@ -6,6 +6,8 @@ on:
     branches: [ master ]
     paths-ignore:
       - '.github/**'
+permissions:
+  contents: write 
 
 jobs:
   export-unpack:
@@ -52,3 +54,5 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore: export & unpack solutions from DEV"
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
