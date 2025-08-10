@@ -1,0 +1,19 @@
+{
+    "environmentVariables": [
+        {
+            "schemaName": "krpk_apiBaseUrl",
+            "value": "https://api.prod.contoso.com"
+        },
+        {
+            "schemaName": "new_Mode",
+            "value": "UAT"
+        }
+    ],
+    "connectionReferences": [
+        {
+            "logicalName": "krpk_sharedcommondataserviceforapps_5ee01",
+            "connectionId": "5a857b8537104b1699a9235fe67ddbba",
+            "connectorId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+        }
+    ]
+}

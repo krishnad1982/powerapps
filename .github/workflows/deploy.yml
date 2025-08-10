@@ -1,0 +1,64 @@
+name: CD - Deploy Managed Solutions
+
+on:
+  workflow_dispatch:
+    inputs:
+      targetEnv:
+        description: 'Target environment (UAT or PROD)'
+        required: true
+        type: choice
+        options: [UAT, PROD]
+
+jobs:
+  deploy:
+    runs-on: windows-latest
+    environment: ${{ github.event.inputs.targetEnv == 'UAT' && 'PP-UAT' || 'PP-PROD' }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Power Platform CLI
+        run: |
+          dotnet tool install --global Microsoft.PowerPlatform.CLI
+          echo "$env:PATH;$HOME\.dotnet\tools" | Out-File -FilePath $env:GITHUB_PATH -Append
+
+      - name: Select target variables
+        id: target
+        shell: pwsh
+        run: |
+          if ("${{ github.event.inputs.targetEnv }}" -eq "UAT") {
+            echo "URL=${{ secrets.PP_UAT_URL }}" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+            echo "SETTINGS=settings/uat.settings.json" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          } else {
+            echo "URL=${{ secrets.PP_PROD_URL }}" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+            echo "SETTINGS=settings/prod.settings.json" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          }
+
+      - name: Auth to target
+        run: |
+          pac auth create --url "${{ steps.target.outputs.URL }}" `
+            --tenant $env:PP_TENANT_ID `
+            --clientId $env:PP_CLIENT_ID `
+            --clientSecret $env:PP_CLIENT_SECRET
+        env:
+          PP_TENANT_ID: ${{ secrets.TENANT_ID }}
+          PP_CLIENT_ID: ${{ secrets.DEPLOY_CLIENT }}
+          PP_CLIENT_SECRET: ${{ secrets.CRM_DEPLOY_SECRET }}
+
+      # ---- Deploy Core (managed) ----
+      - name: Pack Core (managed)
+        run: |
+          pac solution pack --folder solutions/Core/src --zipfile solutions/Core/managed/Core_managed.zip --managed true
+
+      - name: Import Core (managed)
+        run: |
+          pac solution import --path solutions/Core/managed/Core_managed.zip --publish-changes true --settings-file "${{ steps.target.outputs.SETTINGS }}" --force-overwrite
+
+      # ---- Deploy Automate (managed) ----
+      - name: Pack Automate (managed)
+        run: |
+          pac solution pack --folder solutions/Automate/src --zipfile solutions/Automate/managed/Automate_managed.zip --managed true
+
+      - name: Import Automate (managed)
+        run: |
+          pac solution import --path solutions/Automate/managed/Automate_managed.zip --publish-changes true --settings-file "${{ steps.target.outputs.SETTINGS }}" --force-overwrite
