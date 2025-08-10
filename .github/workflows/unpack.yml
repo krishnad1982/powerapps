@@ -24,7 +24,7 @@ jobs:
         shell: pwsh
         run: |
           pac auth create `
-            --url          "${{ secrets.PP_URL }}" `
+            --url          "${{ secrets.PP_DEV_URL }}" `
             --tenant       "${{ secrets.PP_TENANT_ID }}" `
             --clientId     "${{ secrets.PP_CLIENT_ID }}" `
             --clientSecret "${{ secrets.PP_CLIENT_SECRET }}"
