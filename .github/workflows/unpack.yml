@@ -34,19 +34,19 @@ jobs:
 
       - name: Export Core (unmanaged)
         run: |
-          pac solution export --name CS.Core --path solutions/Core/unmanaged/Core.zip --managed false --overwrite true
+          pac solution export --name CSCore --path solutions/Core/unmanaged/CSCore.zip --managed false --overwrite true
 
       - name: Unpack Core
         run: |
-          pac solution unpack --zipfile solutions/Core/unmanaged/Core.zip --folder solutions/Core/src --processCanvasApps
+          pac solution unpack --zipfile solutions/Core/unmanaged/CSCore.zip --folder solutions/Core/src --processCanvasApps
 
       - name: Export Automate (unmanaged)
         run: |
-          pac solution export --name CS.Automation --path solutions/Automate/unmanaged/Automate.zip --managed false --overwrite true
+          pac solution export --name CSAutomation --path solutions/Automate/unmanaged/CSAutomation.zip --managed false --overwrite true
 
       - name: Unpack Automate
         run: |
-          pac solution unpack --zipfile solutions/Automate/unmanaged/Automate.zip --folder solutions/Automate/src --processCanvasApps
+          pac solution unpack --zipfile solutions/Automate/unmanaged/CSAutomation.zip --folder solutions/Automate/src --processCanvasApps
 
       - name: Auto-commit unpacked solutions
         uses: stefanzweifel/git-auto-commit-action@v5
