@@ -24,7 +24,7 @@ jobs:
         run: |
           pac auth create --url $env:PP_DEV_URL `
             --tenant $env:PP_TENANT_ID `
-            --clientId $env:PP_CLIENT_ID `
+            --applicationId $env:PP_CLIENT_ID `
             --clientSecret $env:PP_CLIENT_SECRET
         env:
           PP_DEV_URL: ${{ secrets.PP_DEV_URL }}
