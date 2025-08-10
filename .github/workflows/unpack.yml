@@ -34,7 +34,7 @@ jobs:
 
       - name: Export Core (unmanaged)
         run: |
-          pac solution export --name Core --path solutions/Core/unmanaged/Core.zip --managed false --overwrite true
+          pac solution export --name CS.Core --path solutions/Core/unmanaged/Core.zip --managed false --overwrite true
 
       - name: Unpack Core
         run: |
@@ -42,7 +42,7 @@ jobs:
 
       - name: Export Automate (unmanaged)
         run: |
-          pac solution export --name Automate --path solutions/Automate/unmanaged/Automate.zip --managed false --overwrite true
+          pac solution export --name CS.Automation --path solutions/Automate/unmanaged/Automate.zip --managed false --overwrite true
 
       - name: Unpack Automate
         run: |
