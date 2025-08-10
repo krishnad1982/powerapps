@@ -39,7 +39,7 @@ jobs:
         run: |
           pac auth create --url "${{ steps.target.outputs.URL }}" `
             --tenant $env:PP_TENANT_ID `
-            --clientId $env:PP_CLIENT_ID `
+            --applicationId $env:PP_CLIENT_ID `
             --clientSecret $env:PP_CLIENT_SECRET
         env:
           PP_TENANT_ID: ${{ secrets.TENANT_ID }}
