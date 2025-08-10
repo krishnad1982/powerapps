@@ -17,11 +17,7 @@ jobs:
         shell: pwsh
         run: |
           dotnet tool install --global Microsoft.PowerApps.CLI.Tool
-          "$env:USERPROFILE\.dotnet\tools" | Out-File -FilePath $env:GITHUB_PATH -Append -Encoding utf8
-
-      - name: Verify pac
-        shell: pwsh
-        run: pac --version
+          "$env:USERPROFILE\.dotnet\tools" | Out-File -FilePath $env:GITHUB_PATH -Append -Encoding utf8     
 
       - name: Auth to PP-DEV
         run: |
