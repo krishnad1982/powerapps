@@ -4,73 +4,49 @@ on:
   workflow_dispatch: {}
   push:
     branches: [ master ]
+    paths-ignore:
+      - '.github/**'
 
 jobs:
   export-unpack:
     runs-on: windows-latest
-    environment: PP-DEV   # <-- binds secrets.* to the PP-DEV Environment
-
+    environment: PP-DEV
     steps:
       - uses: actions/checkout@v4
 
-      # Install Power Platform CLI on the runner
-      - uses: microsoft/powerplatform-actions/actions-install@v1
-
-      - name: Verify PAC
-        shell: pwsh
-        run: pac --version
-
-      - name: Auth to PP-DEV (Environment secrets)
+      - name: Install Power Platform CLI
         shell: pwsh
         run: |
-          pac auth create `
-            --url          "${{ secrets.PP_DEV_URL }}" `
-            --tenant       "${{ secrets.PP_TENANT_ID }}" `
-            --clientId     "${{ secrets.PP_CLIENT_ID }}" `
-            --clientSecret "${{ secrets.PP_CLIENT_SECRET }}"
-          pac org who
+          dotnet tool install --global Microsoft.PowerApps.CLI.Tool
+          "$env:USERPROFILE\.dotnet\tools" | Out-File -FilePath $env:GITHUB_PATH -Append -Encoding utf8     
 
-      - name: Prepare solution folders
-        shell: pwsh
+      - name: Auth to PP-DEV
         run: |
-          New-Item -ItemType Directory -Force -Path solutions/Core/unmanaged | Out-Null
-          New-Item -ItemType Directory -Force -Path solutions/Core/src       | Out-Null
-          New-Item -ItemType Directory -Force -Path solutions/Automate/unmanaged | Out-Null
-          New-Item -ItemType Directory -Force -Path solutions/Automate/src       | Out-Null
+          pac auth create --url $env:PP_DEV_URL `
+            --tenant $env:PP_TENANT_ID `
+            --clientId $env:PP_CLIENT_ID `
+            --clientSecret $env:PP_CLIENT_SECRET
+        env:
+          PP_DEV_URL: ${{ secrets.PP_DEV_URL }}
+          PP_TENANT_ID: ${{ secrets.PP_TENANT_ID }}
+          PP_CLIENT_ID: ${{ secrets.PP_CLIENT_ID }}
+          PP_CLIENT_SECRET: ${{ secrets.PP_CLIENT_SECRET }}
 
       - name: Export Core (unmanaged)
-        shell: pwsh
         run: |
-          pac solution export `
-            --name Core `
-            --path solutions/Core/unmanaged/Core.zip `
-            --managed false `
-            --overwrite true
+          pac solution export --name Core --path solutions/Core/unmanaged/Core.zip --managed false --overwrite true
 
       - name: Unpack Core
-        shell: pwsh
         run: |
-          pac solution unpack `
-            --zipfile solutions/Core/unmanaged/Core.zip `
-            --folder  solutions/Core/src `
-            --processCanvasApps
+          pac solution unpack --zipfile solutions/Core/unmanaged/Core.zip --folder solutions/Core/src --processCanvasApps
 
       - name: Export Automate (unmanaged)
-        shell: pwsh
         run: |
-          pac solution export `
-            --name Automate `
-            --path solutions/Automate/unmanaged/Automate.zip `
-            --managed false `
-            --overwrite true
+          pac solution export --name Automate --path solutions/Automate/unmanaged/Automate.zip --managed false --overwrite true
 
       - name: Unpack Automate
-        shell: pwsh
         run: |
-          pac solution unpack `
-            --zipfile solutions/Automate/unmanaged/Automate.zip `
-            --folder  solutions/Automate/src `
-            --processCanvasApps
+          pac solution unpack --zipfile solutions/Automate/unmanaged/Automate.zip --folder solutions/Automate/src --processCanvasApps
 
       - name: Auto-commit unpacked solutions
         uses: stefanzweifel/git-auto-commit-action@v5
