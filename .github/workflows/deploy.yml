@@ -49,7 +49,7 @@ jobs:
       # ---- Deploy Core (managed) ----
       - name: Pack Core (managed)
         run: |
-          pac solution pack --folder solutions/Core/src --zipfile solutions/Core/managed/Core_managed.zip --managed true
+          pac solution pack --folder solutions/Core/src --zipfile solutions/Core/managed/Core_managed.zip --managed
 
       - name: Import Core (managed)
         run: |
@@ -58,7 +58,7 @@ jobs:
       # ---- Deploy Automate (managed) ----
       - name: Pack Automate (managed)
         run: |
-          pac solution pack --folder solutions/Automate/src --zipfile solutions/Automate/managed/Automate_managed.zip --managed true
+          pac solution pack --folder solutions/Automate/src --zipfile solutions/Automate/managed/Automate_managed.zip --managed
 
       - name: Import Automate (managed)
         run: |
