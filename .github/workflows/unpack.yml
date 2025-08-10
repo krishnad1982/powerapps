@@ -3,7 +3,7 @@ name: Unpack from DEV
 on:
   workflow_dispatch: {}
   push:
-    branches: [ main ]
+    branches: [ master ]
 
 jobs:
   export-unpack:
