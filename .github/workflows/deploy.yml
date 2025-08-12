@@ -47,18 +47,12 @@ jobs:
           PP_CLIENT_SECRET: ${{ secrets.CRM_DEPLOY_SECRET }}
 
       # ---- Deploy Core (managed) ----
-      - name: Pack Core (managed)
-        run: |
-          pac solution pack --folder solutions/Core/src --zipfile solutions/Core/managed/Core_managed.zip --managed
-
+      
       - name: Import Core (managed)
         run: |
           pac solution import --path solutions/Core/managed/Core_managed.zip --publish-changes true --settings-file "${{ steps.target.outputs.SETTINGS }}" --force-overwrite
 
       # ---- Deploy Automate (managed) ----
-      - name: Pack Automate (managed)
-        run: |
-          pac solution pack --folder solutions/Automate/src --zipfile solutions/Automate/managed/Automate_managed.zip --managed
 
       - name: Import Automate (managed)
         run: |
