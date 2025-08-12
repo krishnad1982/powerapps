@@ -59,11 +59,11 @@ jobs:
 
       - name: Export Core (managed)
         run: |
-          pac solution export --name Core --path solutions/Core/managed/Core_managed.zip --managed true --overwrite true
+          pac solution export --name CSCore --path solutions/Core/managed/Core_managed.zip --managed true --overwrite true
 
       - name: Export Automate (managed)
         run: |
-          pac solution export --name Automate --path solutions/Automate/managed/Automate_managed.zip --managed true --overwrite true
+          pac solution export --name CSAutomation --path solutions/Automate/managed/Automate_managed.zip --managed true --overwrite true
 
       - name: Upload managed solutions as artifacts
         uses: actions/upload-artifact@v4
