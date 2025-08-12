@@ -8,7 +8,7 @@
     "connectionReferences": [
         {
             "logicalName": "krpk_sharedcommondataserviceforapps_5ee01",
-            "connectionId": "5a857b8537104b1699a9235fe67ddbba",
+            "connectionId": "2b27b4bf-d2f8-4dd2-8bef-0397fc752a89",
             "connectorId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
         }
     ]
