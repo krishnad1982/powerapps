@@ -48,14 +48,7 @@ jobs:
 
       - name: Unpack Automate
         run: |
-          pac solution unpack --zipfile solutions/Automate/unmanaged/CSAutomation.zip --folder solutions/Automate/src --processCanvasApps
-
-      - name: Auto-commit unpacked solutions
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "chore: export & unpack solutions from DEV"
-        env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          pac solution unpack --zipfile solutions/Automate/unmanaged/CSAutomation.zip --folder solutions/Automate/src --processCanvasApps      
 
       - name: Export Core (managed)
         run: |
@@ -65,8 +58,15 @@ jobs:
         run: |
           pac solution export --name CSAutomation --path solutions/Automate/managed/Automate_managed.zip --managed true --overwrite true
 
-      - name: Upload managed solutions as artifacts
-        uses: actions/upload-artifact@v4
+      - name: Auto-commit unpacked solutions
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          name: managed-solutions
-          path: solutions/**/managed/*.zip
+          commit_message: "chore: export & unpack solutions from DEV"
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # - name: Upload managed solutions as artifacts
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: managed-solutions
+      #     path: solutions/**/managed/*.zip
